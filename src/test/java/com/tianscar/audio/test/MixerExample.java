@@ -10,7 +10,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MixerTest {
+public class MixerExample {
 
     private static final AtomicInteger playingLeft = new AtomicInteger(2);
 

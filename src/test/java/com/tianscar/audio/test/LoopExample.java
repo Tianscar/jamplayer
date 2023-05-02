@@ -9,9 +9,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LoopTest {
+public class LoopExample {
 
-    private static final AtomicInteger loopsLeft = new AtomicInteger(1);
+    private static final AtomicInteger loopsLeft = new AtomicInteger(3);
 
     public static void main(String[] args) {
         try {

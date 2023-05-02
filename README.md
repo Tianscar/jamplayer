@@ -1,8 +1,8 @@
-# simple-audio
+# Simple Audio Player for JavaSound
 A quite simple and lightweight audio player for JavaSound, streaming playing to reduce memory usage.
 
 ## Usage
-[Examples](/src/test/java/com/tianscar/audio/)
+[Examples](/src/test/java/com/tianscar/audio/test/)
 
 ## License
 [Apache-2.0](/LICENSE) (c) Tianscar  
