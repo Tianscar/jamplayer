@@ -31,8 +31,8 @@ public class MixerExample {
             player2.addMusicListener(listener);
             player1.setVolume(1, 0);
             player2.setVolume(0, 1);
-            player1.setDataSource(Thread.currentThread().getContextClassLoader(), "test.mp3");
-            player2.setDataSource(Thread.currentThread().getContextClassLoader(), "test.ogg");
+            player1.setDataSource(Thread.currentThread().getContextClassLoader(), "fbodemo1.mp3");
+            player2.setDataSource(Thread.currentThread().getContextClassLoader(), "fbodemo1.ogg");
             player1.prepare();
             player2.prepare();
             player1.start();

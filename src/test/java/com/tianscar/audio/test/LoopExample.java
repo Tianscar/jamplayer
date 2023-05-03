@@ -34,7 +34,7 @@ public class LoopExample {
                     }
                 }
             });
-            player.setDataSource(Thread.currentThread().getContextClassLoader(), "test.wav");
+            player.setDataSource(Thread.currentThread().getContextClassLoader(), "fbodemo1.wav");
             System.out.println("Loops left: " + loopsLeft.get());
             player.prepare();
             player.start();
