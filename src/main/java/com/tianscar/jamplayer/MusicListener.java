@@ -1,4 +1,4 @@
-package com.tianscar.audio;
+package com.tianscar.jamplayer;
 
 import java.util.EventListener;
 

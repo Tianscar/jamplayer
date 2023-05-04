@@ -1,9 +1,9 @@
-# Simple Audio Player for JavaSound
+# Java Audio Media Player
 A quite simple and lightweight audio player for JavaSound, streaming playing to reduce memory usage.  
 Supported audio formats: MP3, OGG Vorbis, FLAC, WAV, AIFF, AU, SND.
 
 ## Usage
-[Examples](/src/test/java/com/tianscar/audio/test/)
+[Examples](/src/test/java/com/tianscar/jamplayer/test/)
 
 ## TODO
 - In-Memory audio player like Android's SoundPool, for short sound effects

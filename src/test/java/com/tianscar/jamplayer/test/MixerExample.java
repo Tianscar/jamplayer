@@ -1,8 +1,8 @@
-package com.tianscar.audio.test;
+package com.tianscar.jamplayer.test;
 
-import com.tianscar.audio.MusicEvent;
-import com.tianscar.audio.MusicListener;
-import com.tianscar.audio.MusicPlayer;
+import com.tianscar.jamplayer.MusicEvent;
+import com.tianscar.jamplayer.MusicListener;
+import com.tianscar.jamplayer.MusicPlayer;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;

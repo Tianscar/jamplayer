@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    libraryName = 'Simple Audio Player for JavaSound'
+    libraryName = 'Java Audio Media Player'
     libraryGroupName = 'com.tianscar.audio'
     libraryVendorName = 'Tianscar'
 
@@ -55,8 +55,8 @@ publishing {
             from components.java
             pom {
                 name = libraryName
-                description = 'Simple Audio Player for JavaSound'
-                url = 'https://github.com/Tianscar/simple-audio'
+                description = 'Java Audio Media Player'
+                url = 'https://github.com/Tianscar/jamplayer'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -71,9 +71,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git@github.com/Tianscar/simple-audio.git'
-                    developerConnection = 'scm:git:git@github.com/Tianscar/simple-audio.git'
-                    url = 'https://github.com/Tianscar/simple-audio'
+                    connection = 'scm:git:git@github.com/Tianscar/jamplayer.git'
+                    developerConnection = 'scm:git:git@github.com/Tianscar/jamplayer.git'
+                    url = 'https://github.com/Tianscar/jamplayer'
                 }
             }
         }

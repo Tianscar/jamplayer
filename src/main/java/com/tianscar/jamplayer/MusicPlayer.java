@@ -1,4 +1,4 @@
-package com.tianscar.audio;
+package com.tianscar.jamplayer;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.tianscar.audio.Utils.*;
+import static com.tianscar.jamplayer.Utils.*;
 import static javax.sound.sampled.AudioSystem.NOT_SPECIFIED;
 
 public class MusicPlayer {
@@ -328,7 +328,7 @@ public class MusicPlayer {
                 microsecondsLength = duration == null ? -1 : duration;
             }
             else if (encoding.equals("VORBISENC")) {
-                microsecondsLength = getOggMicrosecondLength(checkStream); // Already closed
+                microsecondsLength = getOGGMicrosecondLength(checkStream); // Already closed
             }
             long frameLength = sourceStream.getFrameLength();
             if (sourceStream.getFrameLength() != NOT_SPECIFIED && microsecondsLength == NOT_SPECIFIED)

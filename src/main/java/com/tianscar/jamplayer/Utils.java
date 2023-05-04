@@ -1,4 +1,4 @@
-package com.tianscar.audio;
+package com.tianscar.jamplayer;
 
 import javazoom.jl.decoder.Bitstream;
 import javazoom.jl.decoder.BitstreamException;
@@ -89,7 +89,7 @@ final class Utils {
         return (long) (header.total_ms(tn) * 1000L);
     }
 
-    public static long getOggMicrosecondLength(InputStream in) throws IOException {
+    public static long getOGGMicrosecondLength(InputStream in) throws IOException {
         VorbisFile vorbisFile = new VorbisFile(new OggFile(in));
         OggAudioStatistics statistics = new OggAudioStatistics(vorbisFile, vorbisFile);
         statistics.calculate();
