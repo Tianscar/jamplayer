@@ -7,7 +7,7 @@ Supported audio formats: MP3, OGG Vorbis, FLAC, WAV, AIFF, AU, SND.
 
 ## TODO
 - In-Memory audio player like Android's SoundPool, for short sound effects
-- Speex, OGG Speex, Opus, OGG Opus, OGG FLAC, AAC, MP4 AAC, Monkey's Audio, MP4 ALAC, CAF ALAC support
+- WavPack, Speex, OGG Speex, Opus, OGG Opus, OGG FLAC, AAC, MP4 AAC, Monkey's Audio, MP4 ALAC, CAF ALAC support
 - Separate to several modules
 - Swing widget and GUI
 
