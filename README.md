@@ -7,7 +7,9 @@ Supported audio formats: MP3, OGG Vorbis, FLAC, WAV, AIFF, AU, SND.
 
 ## TODO
 - In-Memory audio player like Android's SoundPool, for short sound effects
-- OGG Speex, OGG Opus, OGG FLAC, AAC, MP4 AAC support
+- Speex, OGG Speex, Opus, OGG Opus, OGG FLAC, AAC, MP4 AAC, Monkey's Audio, MP4 ALAC, CAF ALAC support
+- Separate to several modules
+- Swing widget and GUI
 
 ## License
 [Apache-2.0](/LICENSE) (c) Tianscar  
@@ -17,4 +19,4 @@ Supported audio formats: MP3, OGG Vorbis, FLAC, WAV, AIFF, AU, SND.
 [Apache-2.0](https://github.com/Gagravarr/VorbisJava/blob/master/LICENSE.txt) [VorbisJava](https://github.com/Gagravarr/VorbisJava)  
 LGPL-2.1 [MP3SPI](https://mvnrepository.com/artifact/com.googlecode.soundlibs/mp3spi/1.9.5.4)  
 LGPL-2.1 [VorbisSPI](https://mvnrepository.com/artifact/com.googlecode.soundlibs/vorbisspi/1.0.3.3)  
-LGPL-2.1 [jFLAC](https://jflac.sourceforge.net)
+Apache-2.0 [jFLAC](https://jflac.sourceforge.net)

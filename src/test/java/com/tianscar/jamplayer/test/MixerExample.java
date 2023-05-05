@@ -7,7 +7,9 @@ import com.tianscar.jamplayer.MusicPlayer;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.spi.MixerProvider;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MixerExample {
@@ -16,7 +18,9 @@ public class MixerExample {
 
     public static void main(String[] args) {
         try {
-            Mixer mixer = (Mixer) Class.forName("com.sun.media.sound.SoftMixingMixer").newInstance();
+            MixerProvider softMixerSpi =
+                    (MixerProvider) Class.forName("com.sun.media.sound.SoftMixingMixerProvider").getConstructor().newInstance();
+            Mixer mixer = softMixerSpi.getMixer(softMixerSpi.getMixerInfo()[0]);
             MusicPlayer player1 = new MusicPlayer(mixer);
             MusicPlayer player2 = new MusicPlayer(mixer);
             MusicListener listener = new MusicListener() {
@@ -43,7 +47,7 @@ public class MixerExample {
             }
         }
         catch (UnsupportedAudioFileException | LineUnavailableException | IOException | InterruptedException |
-               ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+               ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException("LoopTest failed: ", e);
         }
     }

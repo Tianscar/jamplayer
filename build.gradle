@@ -6,7 +6,7 @@ plugins {
 
 ext {
     libraryName = 'Java Audio Media Player'
-    libraryGroupName = 'com.tianscar.audio'
+    libraryGroupName = 'com.tianscar.jamplayer'
     libraryVendorName = 'Tianscar'
 
     libraryVersionCode = 1
