@@ -1,21 +1,20 @@
 package com.tianscar.jamplayer;
 
-import javazoom.jl.decoder.Bitstream;
-import javazoom.jl.decoder.BitstreamException;
-import javazoom.jl.decoder.Header;
-import org.gagravarr.ogg.OggFile;
-import org.gagravarr.ogg.audio.OggAudioStatistics;
-import org.gagravarr.vorbis.VorbisFile;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
+import static javax.sound.sampled.AudioSystem.NOT_SPECIFIED;
+
 final class Utils {
+
+    static final int DEFAULT_BUFFER_SIZE = 8192;
+    static final AudioFormat DEFAULT_FORMAT = new AudioFormat(44100, 16, 2, true, false);
+    static final DataLine.Info DEFAULT_INFO = new DataLine.Info(SourceDataLine.class, DEFAULT_FORMAT);
 
     private Utils() {
         throw new UnsupportedOperationException();
@@ -69,32 +68,23 @@ final class Utils {
         return samples;
     }
 
-    public static AudioInputStream getSupportedAudioInputStream(AudioFormat targetFormat, AudioInputStream audioInputStream) {
-        Objects.requireNonNull(audioInputStream);
-        AudioFormat baseFormat = audioInputStream.getFormat();
-        return AudioSystem.getAudioInputStream(targetFormat,
-                AudioSystem.getAudioInputStream(new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
-                        baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2,
-                        baseFormat.getSampleRate(), false), audioInputStream));
-    }
+    public static AudioInputStream getSupportedAudioInputStream(AudioFormat targetFormat, AudioInputStream sourceStream) {
+        Objects.requireNonNull(sourceStream);
+        AudioFormat sourceFormat = sourceStream.getFormat();
 
-    public static long getMP3MicrosecondLength(InputStream in, int tn) {
-        Bitstream bitstream = new Bitstream(in);
-        Header header;
-        try {
-            header = bitstream.readFrame();
-        } catch (BitstreamException e) {
-            return -1;
-        }
-        return (long) (header.total_ms(tn) * 1000L);
-    }
+        int sampleSizeInBits = sourceFormat.getSampleSizeInBits();
+        if (sampleSizeInBits == NOT_SPECIFIED) sampleSizeInBits = targetFormat.getSampleSizeInBits();
+        int channels = sourceFormat.getChannels();
+        if (channels == NOT_SPECIFIED) channels = targetFormat.getChannels();
 
-    public static long getOGGMicrosecondLength(InputStream in) throws IOException {
-        VorbisFile vorbisFile = new VorbisFile(new OggFile(in));
-        OggAudioStatistics statistics = new OggAudioStatistics(vorbisFile, vorbisFile);
-        statistics.calculate();
-        vorbisFile.close();
-        return (long) (statistics.getDurationSeconds() * 1_000_000L);
+        AudioFormat decodedFormat = new AudioFormat(
+                sourceFormat.getSampleRate(),
+                sampleSizeInBits,
+                channels,
+                true,
+                sourceFormat.isBigEndian()
+        );
+        return AudioSystem.getAudioInputStream(targetFormat, AudioSystem.getAudioInputStream(decodedFormat, sourceStream));
     }
 
 }

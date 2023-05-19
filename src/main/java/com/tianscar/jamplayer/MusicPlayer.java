@@ -1,27 +1,20 @@
 package com.tianscar.jamplayer;
 
+import com.tianscar.javasound.sampled.AudioResourceLoader;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Files;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.tianscar.jamplayer.Utils.*;
 import static javax.sound.sampled.AudioSystem.NOT_SPECIFIED;
 
 public class MusicPlayer {
-
-    private static final int DEFAULT_BUFFER_SIZE = 8192;
-    private static final AudioFormat DEFAULT_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
-            44100, 16, 2, 4, 44100, false);
-    private static final DataLine.Info DEFAULT_INFO = new DataLine.Info(SourceDataLine.class, DEFAULT_FORMAT);
 
     private final Mixer mixer;
     private final AudioFormat playbackFormat;
@@ -123,7 +116,7 @@ public class MusicPlayer {
     }
 
     private void checkSourceAvailable() {
-        if (!isSourceAvailable()) throw new IllegalStateException("Please set audio source first!");
+        if (!isSourceAvailable()) throw new IllegalStateException("Please set data source first!");
     }
 
     public void setDataSource(ClassLoader classLoader, String resource) {
@@ -239,7 +232,7 @@ public class MusicPlayer {
     }
 
     public long getMicrosecondLength() {
-        return isPrepared() ? microsecondsLength : NOT_SPECIFIED;
+        return isPrepared() ? microsecondsLength.get() : NOT_SPECIFIED;
     }
 
     public int getFramePosition() {
@@ -258,82 +251,33 @@ public class MusicPlayer {
         return playbackInfo;
     }
 
-    private volatile long microsecondsLength = NOT_SPECIFIED;
+    private final AtomicLong microsecondsLength = new AtomicLong(NOT_SPECIFIED);
     public void prepare() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
         checkSourceAvailable();
         if (isPrepared()) return;
         synchronized (lock) {
             final AudioInputStream sourceStream;
-            final String encoding;
-            final long audioLength;
-            final InputStream checkStream;
-            final AudioFileFormat checkFormat;
+            final AudioFileFormat sourceFileFormat;
             if (source instanceof File) {
                 File file = (File) source;
                 sourceStream = AudioSystem.getAudioInputStream(file);
-                encoding = sourceStream.getFormat().getEncoding().toString();
-                if (encoding.startsWith("MPEG")) {
-                    audioLength = file.length();
-                    checkStream = Files.newInputStream(file.toPath());
-                    checkFormat = null;
-                }
-                else if (encoding.equals("FLAC") || encoding.equals("VORBISENC")) {
-                    audioLength = 0;
-                    checkStream = null;
-                    checkFormat = AudioSystem.getAudioFileFormat(file);
-                }
-                else {
-                    audioLength = 0;
-                    checkStream = null;
-                    checkFormat = null;
-                }
+                sourceFileFormat = AudioSystem.getAudioFileFormat(file);
             }
             else if (source instanceof String) {
-                String resourceName = (String) source;
-                InputStream resourceStream = resourceLoader.getResourceAsStream(resourceName);
-                if (resourceStream == null) throw new IOException("Unable to load resource '" + source + "' with ClassLoader " + resourceLoader);
-                sourceStream = AudioSystem.getAudioInputStream(resourceStream);
-                encoding = sourceStream.getFormat().getEncoding().toString();
-                URL resourceURL = resourceLoader.getResource(resourceName);
-                if (resourceURL == null) throw new IOException("Unable to load resource '" + source + "' with ClassLoader " + resourceLoader);
-                if (encoding.startsWith("MPEG")) {
-                    URLConnection connection = resourceURL.openConnection();
-                    audioLength = connection.getContentLengthLong();
-                    checkStream = connection.getInputStream();
-                    checkFormat = null;
-                }
-                else if (encoding.startsWith("VORBISENC")) {
-                    audioLength = 0;
-                    checkStream = resourceURL.openStream();
-                    checkFormat = null;
-                }
-                else if (encoding.equals("FLAC")) {
-                    audioLength = 0;
-                    checkStream = null;
-                    checkFormat = AudioSystem.getAudioFileFormat(resourceURL);
-                }
-                else {
-                    audioLength = 0;
-                    checkStream = null;
-                    checkFormat = null;
-                }
+                String name = (String) source;
+                sourceStream = AudioResourceLoader.getAudioInputStream(resourceLoader, name);
+                sourceFileFormat = AudioResourceLoader.getAudioFileFormat(resourceLoader, name);
             }
             else throw new IOException("Invalid source: " + source);
-            if (encoding.startsWith("MPEG")) {
-                microsecondsLength = getMP3MicrosecondLength(checkStream, (int) clamp(audioLength, 0, Integer.MAX_VALUE));
-                closeQuietly(checkStream);
+            Long duration = (Long) sourceFileFormat.properties().get("duration");
+            if (duration == null) {
+                if (sourceFileFormat.getFrameLength() != NOT_SPECIFIED &&
+                        sourceFileFormat.getFormat().getFrameRate() != NOT_SPECIFIED) {
+                    microsecondsLength.set((long) (((double) sourceFileFormat.getFrameLength() /
+                            (double) sourceFileFormat.getFormat().getFrameRate()) * 1_000_000L));
+                }
             }
-            else if ((encoding.equals("VORBISENC") && checkFormat != null) || encoding.equals("FLAC")) {
-                Long duration = (Long) Objects.requireNonNull(checkFormat).properties().get("duration");
-                microsecondsLength = duration == null ? -1 : duration;
-            }
-            else if (encoding.equals("VORBISENC")) {
-                microsecondsLength = getOGGMicrosecondLength(checkStream); // Already closed
-            }
-            long frameLength = sourceStream.getFrameLength();
-            if (sourceStream.getFrameLength() != NOT_SPECIFIED && microsecondsLength == NOT_SPECIFIED)
-                microsecondsLength = (long) (frameLength / sourceStream.getFormat().getFrameRate() * 1_000_000L);
-
+            else microsecondsLength.set(duration);
             if (audioInputStream != null) audioInputStream.close();
             audioInputStream = getSupportedAudioInputStream(playbackFormat, sourceStream);
             SourceDataLine tmp = (SourceDataLine) (mixer == null ? AudioSystem.getLine(playbackInfo) : mixer.getLine(playbackInfo));

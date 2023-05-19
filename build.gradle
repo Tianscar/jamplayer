@@ -9,8 +9,8 @@ ext {
     libraryGroupName = 'com.tianscar.jamplayer'
     libraryVendorName = 'Tianscar'
 
-    libraryVersionCode = 1
-    libraryVersionName = '1.0.0'
+    libraryVersionCode = 2
+    libraryVersionName = '1.0.1'
 
     librarySourceCompatibility = JavaVersion.VERSION_1_8
     libraryTargetCompatibility = JavaVersion.VERSION_1_8
@@ -28,13 +28,20 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.googlecode.soundlibs:mp3spi:1.9.5.4'
-    implementation 'com.googlecode.soundlibs:vorbisspi:1.0.3.3'
-    implementation 'org.jflac:jflac-codec:1.5.2'
-    implementation 'org.gagravarr:vorbis-java-core:0.8'
+    implementation 'com.tianscar.javasound:javasound-resloader:0.1.3'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    testImplementation 'com.tianscar.javasound:javasound-flac:1.4.1'
+    testImplementation 'com.tianscar.javasound:javasound-mp3:1.9.8'
+    testImplementation 'com.tianscar.javasound:javasound-shorten:3.6.2'
+    testImplementation 'com.tianscar.javasound:javasound-speex:0.9.8'
+    testImplementation 'com.tianscar.javasound:javasound-vorbis:2.0.0'
+    testImplementation 'com.tianscar.javasound:javasound-wavpack:1.4.2'
+    testImplementation 'com.tianscar.javasound:javasound-aac:0.9.8'
+    testImplementation 'com.tianscar.javasound:javasound-alac:0.2.3'
+    testImplementation 'com.tianscar.javasound:javasound-ape:1.7.7'
 }
 
 test {
