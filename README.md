@@ -1,4 +1,4 @@
-# JavaSound Audio Media Player
+# Java Audio Media Player
 A quite simple and lightweight audio player for JavaSound, supports both streaming playback (for long music) and in-memory sound pool (for short sound effects).
 
 The library itself can only play audio formats which JavaSound officially supported (WAV, AIFF, AIFC, AU, SND).  
