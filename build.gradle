@@ -9,8 +9,8 @@ ext {
     libraryGroupName = 'com.tianscar.jamplayer'
     libraryVendorName = 'Tianscar'
 
-    libraryVersionCode = 2
-    libraryVersionName = '1.0.1'
+    libraryVersionCode = 3
+    libraryVersionName = '1.1.0'
 
     librarySourceCompatibility = JavaVersion.VERSION_1_8
     libraryTargetCompatibility = JavaVersion.VERSION_1_8

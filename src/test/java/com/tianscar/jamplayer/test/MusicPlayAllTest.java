@@ -10,7 +10,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
-public class PlayAllTest {
+public class MusicPlayAllTest {
 
     private void play(String format) throws UnsupportedAudioFileException, LineUnavailableException, IOException, InterruptedException {
         play(format, null);

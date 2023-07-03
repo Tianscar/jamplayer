@@ -14,20 +14,19 @@ public class LoopExample {
     private static final AtomicInteger loopsLeft = new AtomicInteger(3);
 
     public static void main(String[] args) {
-        try {
+        try (MusicPlayer player = new MusicPlayer()) {
             System.out.println("Loop " + loopsLeft.get() + " times, total " + (loopsLeft.get() + 1));
-            MusicPlayer player = new MusicPlayer();
             player.addMusicListener(new MusicListener() {
                 @Override
                 public void update(MusicEvent event) {
-                    if (event.getMusicPlayer() == player) {
+                    if (event.getSource() == player) {
                         if (event.getType() == MusicEvent.Type.STOP) {
                             if (loopsLeft.getAndDecrement() <= 0) return;
                             System.out.println("Loops left: " + loopsLeft.get());
                             try {
                                 player.prepare();
                                 player.start();
-                            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+                            } catch (LineUnavailableException | UnsupportedAudioFileException e) {
                                 throw new RuntimeException(e);
                             }
                         }

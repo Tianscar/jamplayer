@@ -9,14 +9,15 @@ public class MusicEvent extends EventObject {
     private final Type type;
     private final long position;
 
-    public MusicEvent(MusicPlayer player, Type type, long position) {
-        super(player);
+    public MusicEvent(MusicPlayer source, Type type, long position) {
+        super(source);
         this.type = type;
         this.position = position;
     }
 
-    public final MusicPlayer getMusicPlayer() {
-        return (MusicPlayer) getSource();
+    @Override
+    public final MusicPlayer getSource() {
+        return (MusicPlayer) super.getSource();
     }
 
     public final Type getType() {
@@ -29,7 +30,7 @@ public class MusicEvent extends EventObject {
 
     @Override
     public String toString() {
-        return String.format("%s event from %s", type, getMusicPlayer());
+        return String.format("%s event from %s", type, getSource());
     }
 
     public static class Type {
