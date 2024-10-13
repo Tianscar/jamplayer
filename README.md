@@ -1,3 +1,5 @@
+WARNING: THIS PROJECT IS NO LONGER MAINTAINED. MOVED TO: https://github.com/jseproject/jse-player
+
 # Java Audio Media Player
 A quite simple and lightweight audio player for JavaSound, supports both streaming playback (for long music) and in-memory sound clip (for short sound effects).
 
